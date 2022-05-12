@@ -2,6 +2,10 @@ package string_sum
 
 import (
 	"errors"
+	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -23,5 +27,60 @@ var (
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
 func StringSum(input string) (output string, err error) {
-	return "", nil
+	input = strings.TrimSpace(input)
+	if len(input) == 0 {
+		return "", errorEmptyInput
+	}
+
+	s := regexp.MustCompile(`\d`)
+	digits := s.FindAllStringIndex(input, -1)
+	if len(digits) != 2 {
+		return "", errorNotTwoOperands
+	}
+
+	var x, y int
+	var signMinus, definedX, definedY bool
+
+	for _, v := range input {
+		val := string(v)
+		if !definedX {
+			cur, err := strconv.Atoi(val)
+			if err != nil {
+				if val == "-" {
+					signMinus = true
+				} else if val == "+" || val == " " {
+				} else {
+					return "", fmt.Errorf("incorrect input string 1")
+				}
+			} else {
+				if signMinus {
+					x = -cur
+				} else {
+					x = cur
+				}
+				signMinus = false
+				definedX = true
+			}
+		} else if definedX && !definedY {
+			cur, err := strconv.Atoi(val)
+			if err != nil {
+				if val == "-" {
+					signMinus = true
+				} else if val == "+" || val == " " {
+				} else {
+					return "", fmt.Errorf("incorrect input string 2")
+				}
+			} else {
+				if signMinus {
+					y = -cur
+				} else {
+					y = cur
+				}
+				signMinus = false
+				definedY = true
+			}
+		}
+	}
+
+	return strconv.Itoa(x + y), nil
 }
