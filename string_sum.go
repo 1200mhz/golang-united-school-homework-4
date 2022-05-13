@@ -34,8 +34,8 @@ func StringSum(input string) (output string, err error) {
 
 	lessPatern := `^[\s\+-]{0,}\d{1,}$`
 	re := regexp.MustCompile(lessPatern)
-	hz := re.FindAllString(input, 1)
-	if len(hz) == 1 {
+	less := re.FindAllString(input, 1)
+	if len(less) == 1 {
 		return "", fmt.Errorf("e2: %w", errorNotTwoOperands)
 	}
 
