@@ -31,7 +31,7 @@ func TestFailWhenLessTwoOperands(t *testing.T) {
 	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Unwrap(err).Error() == errorMessage {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))
-		fmt.Println(err.Error())
+		t.Errorf(err.Error())
 	}
 }
 
@@ -45,20 +45,21 @@ func TestFailWhenTooMuchOperands(t *testing.T) {
 	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Unwrap(err).Error() == errorMessage {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))
-		fmt.Println(err.Error())
+		t.Errorf(err.Error())
 	}
 }
 
 func TestFailWhenInputIncorrect(t *testing.T) {
 	s := "24c+55"
 	expected := ""
+	expectedErr := &strconv.NumError{Func: "Atoi", Num: "24c", Err: strconv.ErrSyntax}
 
 	actual, err := StringSum(s)
 
-	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Is(err, strconv.ErrSyntax) {
+	if !reflect.DeepEqual(actual, expected) || !reflect.DeepEqual(err, expectedErr) {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))
-		fmt.Println(err.Error())
+		t.Errorf(err.Error())
 	}
 }
 
