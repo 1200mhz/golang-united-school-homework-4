@@ -29,22 +29,23 @@ var (
 func StringSum(input string) (output string, err error) {
 	input = strings.TrimSpace(input)
 	if len(input) == 0 {
-		return "", errorEmptyInput
+		return "", fmt.Errorf("e1: %w", errorEmptyInput)
 	}
 
-	s := regexp.MustCompile(`\d`)
-	digits := s.FindAllStringIndex(input, -1)
-	if len(digits) != 2 {
-		return "", errorNotTwoOperands
+	pattern := `^[\s\+-]{0,}\d{1,}[\s\+-]{0,}\d{1,}`
+	re := regexp.MustCompile(pattern)
+	remain := re.ReplaceAllString(input, "")
+	if len(remain) > 0 {
+		return "", fmt.Errorf("e2: %w", errorNotTwoOperands)
 	}
 
 	var x, y int
-	var signMinus, definedX, definedY bool
+	var started, signMinus, definedX bool
 
 	for _, v := range input {
 		val := string(v)
 		if !definedX {
-			cur, err := strconv.Atoi(val)
+			_, err := strconv.Atoi(val)
 			if err != nil {
 				if val == "-" {
 					signMinus = true
@@ -52,17 +53,21 @@ func StringSum(input string) (output string, err error) {
 				} else {
 					return "", fmt.Errorf("incorrect input string 1")
 				}
+				if started {
+					definedX = true
+				}
 			} else {
+				x, _ = strconv.Atoi(strconv.Itoa(x) + val)
 				if signMinus {
-					x = -cur
+					x = -x
 				} else {
-					x = cur
+					x = x
 				}
 				signMinus = false
-				definedX = true
+				started = true
 			}
-		} else if definedX && !definedY {
-			cur, err := strconv.Atoi(val)
+		} else if definedX {
+			_, err := strconv.Atoi(val)
 			if err != nil {
 				if val == "-" {
 					signMinus = true
@@ -71,13 +76,14 @@ func StringSum(input string) (output string, err error) {
 					return "", fmt.Errorf("incorrect input string 2")
 				}
 			} else {
+				y, _ = strconv.Atoi(strconv.Itoa(y) + val)
 				if signMinus {
-					y = -cur
+					y = -y
 				} else {
-					y = cur
+					y = y
 				}
 				signMinus = false
-				definedY = true
+
 			}
 		}
 	}

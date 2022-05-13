@@ -1,6 +1,7 @@
 package string_sum
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"testing"
@@ -9,9 +10,10 @@ import (
 func TestFailWhenEmptyInputStringSum(t *testing.T) {
 	s := "   "
 	expected := ""
+
 	actual, err := StringSum(s)
 
-	if !reflect.DeepEqual(actual, expected) || err == nil || err.Error() != "input is empty" {
+	if !reflect.DeepEqual(actual, expected) || err == nil || err.Error() != "e1: input is empty" {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))
 		t.Errorf("error, man")
@@ -19,22 +21,23 @@ func TestFailWhenEmptyInputStringSum(t *testing.T) {
 }
 
 func TestFailWhenIncorrectNumberOfOperands(t *testing.T) {
-	s := "1 - 2 + 88"
+	s := "-1 - 2 + 88"
 	expected := ""
+
 	actual, err := StringSum(s)
 
-	errorMessage := "expecting two operands, but received more or less"
-	if !reflect.DeepEqual(actual, expected) || err == nil || err.Error() != errorMessage {
+	errorMessage := "e2: expecting two operands, but received more or less"
+	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Unwrap(err).Error() == errorMessage {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))
-		t.Errorf("error, man")
+		fmt.Println(err.Error())
 	}
 }
 
 func TestSumOfPositiveOperands(t *testing.T) {
-	s := "1 + 2"
+	s := "11 + 33"
+	expected := "44"
 
-	expected := "3"
 	actual, err := StringSum(s)
 
 	if err != nil {
@@ -49,9 +52,9 @@ func TestSumOfPositiveOperands(t *testing.T) {
 }
 
 func TestSumOfDifferentOperands(t *testing.T) {
-	s := "-5 + 1"
+	s := "-50 + 1"
+	expected := "-49"
 
-	expected := "-4"
 	actual, err := StringSum(s)
 
 	if err != nil {
@@ -66,9 +69,9 @@ func TestSumOfDifferentOperands(t *testing.T) {
 }
 
 func TestSumOfNegativeOperands(t *testing.T) {
-	s := "- 4 + -2"
+	s := "- 48 + -22"
+	expected := "-70"
 
-	expected := "-6"
 	actual, err := StringSum(s)
 
 	if err != nil {
