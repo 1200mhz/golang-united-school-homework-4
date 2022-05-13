@@ -20,13 +20,27 @@ func TestFailWhenEmptyInputStringSum(t *testing.T) {
 	}
 }
 
-func TestFailWhenIncorrectNumberOfOperands(t *testing.T) {
-	s := "-1 - 2 + 88"
+func TestFailWhenLessTwoOperands(t *testing.T) {
+	s := "555"
 	expected := ""
 
 	actual, err := StringSum(s)
 
 	errorMessage := "e2: expecting two operands, but received more or less"
+	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Unwrap(err).Error() == errorMessage {
+		fmt.Println(expected, len(expected))
+		fmt.Println(actual, len(actual))
+		fmt.Println(err.Error())
+	}
+}
+
+func TestFailWhenTooMuchOperands(t *testing.T) {
+	s := "-1 - 2 + 88"
+	expected := ""
+
+	actual, err := StringSum(s)
+
+	errorMessage := "e3: expecting two operands, but received more or less"
 	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Unwrap(err).Error() == errorMessage {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))

@@ -32,11 +32,18 @@ func StringSum(input string) (output string, err error) {
 		return "", fmt.Errorf("e1: %w", errorEmptyInput)
 	}
 
+	lessPatern := `^[\s\+-]{0,}\d{1,}$`
+	re := regexp.MustCompile(lessPatern)
+	hz := re.FindAllString(input, 1)
+	if len(hz) == 1 {
+		return "", fmt.Errorf("e2: %w", errorNotTwoOperands)
+	}
+
 	pattern := `^[\s\+-]{0,}\d{1,}[\s\+-]{0,}\d{1,}`
-	re := regexp.MustCompile(pattern)
+	re = regexp.MustCompile(pattern)
 	remain := re.ReplaceAllString(input, "")
 	if len(remain) > 0 {
-		return "", fmt.Errorf("e2: %w", errorNotTwoOperands)
+		return "", fmt.Errorf("e3: %w", errorNotTwoOperands)
 	}
 
 	var x, y int
