@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strconv"
 	"testing"
 )
 
@@ -42,6 +43,19 @@ func TestFailWhenTooMuchOperands(t *testing.T) {
 
 	errorMessage := "e3: expecting two operands, but received more or less"
 	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Unwrap(err).Error() == errorMessage {
+		fmt.Println(expected, len(expected))
+		fmt.Println(actual, len(actual))
+		fmt.Println(err.Error())
+	}
+}
+
+func TestFailWhenInputIncorrect(t *testing.T) {
+	s := "11 + 18x"
+	expected := ""
+
+	actual, err := StringSum(s)
+
+	if !reflect.DeepEqual(actual, expected) || err == nil || errors.Is(err, strconv.ErrSyntax) {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))
 		fmt.Println(err.Error())

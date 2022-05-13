@@ -58,7 +58,11 @@ func StringSum(input string) (output string, err error) {
 					signMinus = true
 				} else if val == "+" || val == " " {
 				} else {
-					return "", fmt.Errorf("incorrect input string 1")
+					return "", &strconv.NumError{
+						Func: "Atoi",
+						Num:  strconv.Itoa(x) + val,
+						Err:  strconv.ErrSyntax,
+					}
 				}
 				if started {
 					definedX = true
@@ -80,7 +84,11 @@ func StringSum(input string) (output string, err error) {
 					signMinus = true
 				} else if val == "+" || val == " " {
 				} else {
-					return "", fmt.Errorf("incorrect input string 2")
+					return "", &strconv.NumError{
+						Func: "Atoi",
+						Num:  strconv.Itoa(y) + val,
+						Err:  strconv.ErrSyntax,
+					}
 				}
 			} else {
 				y, _ = strconv.Atoi(strconv.Itoa(y) + val)
