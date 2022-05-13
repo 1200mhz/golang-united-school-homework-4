@@ -50,7 +50,7 @@ func TestFailWhenTooMuchOperands(t *testing.T) {
 }
 
 func TestFailWhenInputIncorrect(t *testing.T) {
-	s := "11 + 18x"
+	s := "24c+55"
 	expected := ""
 
 	actual, err := StringSum(s)

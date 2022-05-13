@@ -39,7 +39,7 @@ func StringSum(input string) (output string, err error) {
 		return "", fmt.Errorf("e2: %w", errorNotTwoOperands)
 	}
 
-	pattern := `^[\s\+-]{0,}\d{1,}[\s\+-]{0,}\d{1,}`
+	pattern := `^[\s\+-]{0,}[0-9a-z]{1,}[\s\+-]{0,}[0-9a-z]{1,}`
 	re = regexp.MustCompile(pattern)
 	remain := re.ReplaceAllString(input, "")
 	if len(remain) > 0 {
