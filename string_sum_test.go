@@ -56,7 +56,7 @@ func TestFailWhenInputIncorrect(t *testing.T) {
 
 	actual, err := StringSum(s)
 
-	if !reflect.DeepEqual(actual, expected) || !reflect.DeepEqual(err, expectedErr) {
+	if !reflect.DeepEqual(actual, expected) || err == nil || !reflect.DeepEqual(errors.Unwrap(err), expectedErr) {
 		fmt.Println(expected, len(expected))
 		fmt.Println(actual, len(actual))
 		t.Errorf(err.Error())
