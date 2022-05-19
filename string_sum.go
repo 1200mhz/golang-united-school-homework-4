@@ -32,8 +32,8 @@ func StringSum(input string) (output string, err error) {
 		return "", fmt.Errorf("e1: %w", errorEmptyInput)
 	}
 
-	lessPatern := `^[\s\+-]{0,}\d{1,}$`
-	re := regexp.MustCompile(lessPatern)
+	lessPattern := `^[\s\+-]{0,}\d{1,}$`
+	re := regexp.MustCompile(lessPattern)
 	less := re.FindAllString(input, 1)
 	if len(less) == 1 {
 		return "", fmt.Errorf("e2: %w", errorNotTwoOperands)
